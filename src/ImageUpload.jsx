@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Client } from "@gradio/client";
+import { useDropzone } from "react-dropzone";
 
 const todos = {
   Corn___Common_Rust: [
@@ -48,11 +49,13 @@ const ImageUpload = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
     setImage(file);
     setImagePreview(URL.createObjectURL(file));
   };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const handleSubmit = async () => {
     if (!image) {
@@ -93,28 +96,20 @@ const ImageUpload = () => {
       <p className="mb-4 text-center text-gray-600">
         Upload an image of a maize leaf to classify its disease.
       </p>
-      <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg mb-4 text-center">
-        <input
-          id="file-input"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="hidden"
-        />
-        <label
-          htmlFor="file-input"
-          className="block text-center text-gray-500 cursor-pointer"
-        >
-          {imagePreview ? (
-            <img src={imagePreview} alt="Image Preview" className="mx-auto" />
-          ) : (
-            <>
-              <p className="mb-2">Drop Image Here</p>
-              <p>- or -</p>
-              <p className="text-blue-500">Click to Upload</p>
-            </>
-          )}
-        </label>
+      <div
+        {...getRootProps()}
+        className="border-2 border-dashed border-gray-300 p-4 rounded-lg mb-4 text-center"
+      >
+        <input {...getInputProps()} accept="image/*" />
+        {imagePreview ? (
+          <img src={imagePreview} alt="Image Preview" className="mx-auto" />
+        ) : (
+          <>
+            <p className="mb-2">Drop Image Here</p>
+            <p>- or -</p>
+            <p className="text-blue-500">Click to Upload</p>
+          </>
+        )}
       </div>
       <div className="flex justify-center space-x-4 mb-6">
         <button
