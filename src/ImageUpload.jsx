@@ -146,7 +146,7 @@ const ImageUpload = () => {
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
             Classified Label:
           </h2>
-          <p className="text-3xl font-bold font-raleway mb-4 text-orange-500">
+          <p className="text-3xl break-all font-bold font-raleway mb-4 text-orange-500">
             {result.label}
           </p>
           {todos[result.label] && (
